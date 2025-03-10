@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 // publics routes 
 // register routes
 Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
+Route::post('registrationUser', [RegisterController::class, 'registrationUser']);
 // login routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
