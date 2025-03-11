@@ -34,7 +34,7 @@
             </div>
         @endif
         
-        <form action="{{ url('login') }}" method="POST">
+        <form action="{{ url('authenticate') }}" method="POST">
             @csrf
             
             <div class="mb-4">
