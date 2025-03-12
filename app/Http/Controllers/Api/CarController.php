@@ -15,7 +15,23 @@ class CarController extends Controller
      */
     public function index()
     {
-        //
+          // retrive car by id
+          $car = Car::all();
+
+          // handle error response 
+          if (!$car) {
+              return response()->json([
+                  'status' => false, 
+                  'message' => 'Car not found!',
+              ], 404);
+          }
+  
+          // handle success reponse 
+          return response()->json([
+              'status' => true, 
+              'message' => 'Cars retrieved successfully!',
+              'data' => CarResource::collection($car),
+          ], 200);
     }
 
     /**
@@ -115,6 +131,21 @@ class CarController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // retrive car by id
+        $car = Car::find($id);
+
+        // handle error response 
+        if (!$car) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'Car not found!',
+            ], 404);
+        }
+
+        $car->destroy($id);
+        return response()->json([
+            'status' => true, 
+            'message' => 'Car deleted successfuly!'
+        ]);
     }
 }
