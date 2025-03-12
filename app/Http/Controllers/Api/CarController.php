@@ -15,23 +15,53 @@ class CarController extends Controller
      */
     public function index()
     {
-          // retrive car by id
-          $car = Car::all();
+        //   // retrive car by id
+        //   $car = Car::all();
 
-          // handle error response 
-          if (!$car) {
-              return response()->json([
-                  'status' => false, 
-                  'message' => 'Car not found!',
-              ], 404);
-          }
+        //   // handle error response 
+        //   if (!$car) {
+        //       return response()->json([
+        //           'status' => false, 
+        //           'message' => 'Car not found!',
+        //       ], 404);
+        //   }
   
-          // handle success reponse 
-          return response()->json([
-              'status' => true, 
-              'message' => 'Cars retrieved successfully!',
-              'data' => CarResource::collection($car),
-          ], 200);
+        //   // handle success reponse 
+        //   return response()->json([
+        //       'status' => true, 
+        //       'message' => 'Cars retrieved successfully!',
+        //       'data' => CarResource::collection($car),
+        //   ], 200);
+        
+        //with pagination
+
+        // retrive car by id
+        $cars = Car::paginate(2);
+
+        // handle error response 
+        if ($cars->isEmpty()) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'No cars found!',
+            ], 404);
+        }
+
+        // handle success reponse 
+        return response()->json([
+            'status' => true, 
+            'message' => 'Cars retrieved successfully!',
+            'data' => [
+                'cars' => CarResource::collection($cars),
+                'pagination' => [
+                    'total' => $cars->total(),
+                    'perPage' => $cars->perPage(),
+                    'currentPage' => $cars->currentPage(),
+                    'lastPage' => $cars->lastPage(),
+                    'nextPageUrl' => $cars->nextPageUrl(),
+                    'previousPageUrl' => $cars->previousPageUrl(),
+                ]
+            ],
+        ], 200);
     }
 
     /**
