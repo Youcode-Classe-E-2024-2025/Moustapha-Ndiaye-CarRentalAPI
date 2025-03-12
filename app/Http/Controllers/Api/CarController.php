@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CarResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Car;
@@ -41,7 +42,7 @@ class CarController extends Controller
         return response()->json([
             'status' => true, 
             'message' => 'Car created successfuly',
-            'data' => $cars
+            'data' => new CarResource($cars)
         ], 201);
 
     }
