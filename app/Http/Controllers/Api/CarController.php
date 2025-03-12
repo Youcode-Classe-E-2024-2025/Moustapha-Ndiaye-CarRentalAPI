@@ -76,7 +76,38 @@ class CarController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'model' => ['required', 'string', 'min:3', 'max:255'],
+            'image_url' => ['nullable', 'string'], 
+            'is_available' => ['boolean'],
+            'daily_rate' => ['required', 'numeric', 'min:1']
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'All fields are required',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // retrive car by id
+        $car = Car::find($id);
+
+        // handle error response 
+        if (!$car) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'Car not found!',
+            ], 404);
+        }
+
+        $car->update($request->all());
+        return response()->json([
+            'status' => true, 
+            'message' => 'Car updated successfuly',
+            'data' => new CarResource($car)
+        ], 201);
     }
 
     /**
