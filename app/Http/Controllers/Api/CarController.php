@@ -52,7 +52,23 @@ class CarController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // retrive car by id
+        $car = Car::find($id);
+
+        // handle error response 
+        if (!$car) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'Car not found!',
+            ], 404);
+        }
+
+        // handle success reponse 
+        return response()->json([
+            'status' => true, 
+            'message' => 'Car retrieved successfully!',
+            'data' => new CarResource($car),
+        ], 200);
     }
 
     /**
