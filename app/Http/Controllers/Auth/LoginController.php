@@ -8,6 +8,41 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
+     /**
+     * @OA\Get(
+     *     path="/login",
+     *     summary="Show login form",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login form view"
+     *     )
+     * )
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/login",
+     *     summary="Authenticate user",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="User authenticated"),
+     *     @OA\Response(response=302, description="Redirect to dashboard or user profile"),
+     *     @OA\Response(response=401, description="Invalid credentials")
+     * )
+     */
+
     public function showLoginForm()
     {
         return view('auth.login');
