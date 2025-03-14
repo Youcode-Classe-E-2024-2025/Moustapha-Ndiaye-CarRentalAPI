@@ -8,23 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
-     /**
-     * @OA\Get(
-     *     path="/login",
-     *     summary="Show login form",
-     *     tags={"Authentication"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Login form view"
-     *     )
-     * )
-     */
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    /**
+      /**
      * @OA\Post(
      *     path="/login",
      *     summary="Authenticate user",
@@ -42,7 +26,6 @@ class LoginController extends Controller
      *     @OA\Response(response=401, description="Invalid credentials")
      * )
      */
-
     public function showLoginForm()
     {
         return view('auth.login');
