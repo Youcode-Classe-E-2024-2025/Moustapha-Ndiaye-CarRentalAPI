@@ -31,7 +31,7 @@ class CarController extends Controller
     /**
      * @OA\Get(
      *     path="/api/cars",
-     *     summary="Récupérer la liste des voitures",
+     *     summary="Cars list",
      *     tags={"Cars"},
      *     @OA\Response(
      *         response=200,
@@ -95,7 +95,7 @@ class CarController extends Controller
     /**
  * @OA\Post(
  *     path="/api/cars",
- *     summary="Créer une nouvelle voiture",
+ *     summary="New Car",
  *     tags={"Cars"},
  *     @OA\RequestBody(
  *         required=true,
@@ -150,7 +150,7 @@ class CarController extends Controller
  /**
      * @OA\Get(
      *     path="/api/cars/{id}",
-     *     summary="Récupérer une voiture spécifique",
+     *     summary="Retrive car by id",
      *     tags={"Cars"},
      *     @OA\Parameter(
      *         name="id",
@@ -193,7 +193,7 @@ class CarController extends Controller
     /**
  * @OA\Put(
  *     path="/api/cars/{id}",
- *     summary="Mettre à jour une voiture existante",
+ *     summary="Update car infos",
  *     tags={"Cars"},
  *     @OA\Parameter(
  *         name="id",
@@ -269,7 +269,7 @@ class CarController extends Controller
     /**
  * @OA\Delete(
  *     path="/api/cars/{id}",
- *     summary="Supprimer une voiture",
+ *     summary="Delete car",
  *     tags={"Cars"},
  *     @OA\Parameter(
  *         name="id",

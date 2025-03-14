@@ -11,7 +11,7 @@
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Récupérer la liste des voitures",
+                "summary": "Cars list",
                 "operationId": "4e913ee0b6125f5ad41f32df1df5b8a4",
                 "responses": {
                     "200": {
@@ -35,7 +35,7 @@
                 "tags": [
                     "Cars"
                 ],
-                "summary": "Récupérer une voiture spécifique",
+                "summary": "Retrive car by id",
                 "operationId": "27c826192271dae5e6e7246be568b4ca",
                 "parameters": [
                     {
