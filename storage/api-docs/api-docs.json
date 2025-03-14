@@ -1,0 +1,199 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CarRentalAPI",
+        "description": "API for managing car rentals",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/rentals": {
+            "get": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Get a list of rentals",
+                "operationId": "733e825661308344661419b81c671c9d",
+                "responses": {
+                    "200": {
+                        "description": "List of rentals",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Create a new rental",
+                "operationId": "5a87ce05d9202160ea935292241b858a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "car_id",
+                                    "user_id",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "car_id": {
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rental created"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/rentals/{id}": {
+            "get": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Get a rental by ID",
+                "operationId": "7b653ce12801e8f7bac5bcb606fe396e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rental found"
+                    },
+                    "404": {
+                        "description": "Rental not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Update a rental",
+                "operationId": "26fab94033a488782d82e6afdf564abb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "car_id",
+                                    "user_id",
+                                    "start_date",
+                                    "end_date"
+                                ],
+                                "properties": {
+                                    "car_id": {
+                                        "type": "integer"
+                                    },
+                                    "user_id": {
+                                        "type": "integer"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rental updated"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Rental not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Delete a rental",
+                "operationId": "66f1922cafec7e158482cb5d659fa10e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rental deleted"
+                    },
+                    "404": {
+                        "description": "Rental not found"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Rentals",
+            "description": "Rentals"
+        }
+    ]
+}

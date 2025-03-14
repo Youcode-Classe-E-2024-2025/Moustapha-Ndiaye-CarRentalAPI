@@ -32,7 +32,7 @@
                             Car Rental Admin
                         </h1>
                     </div>
-                    <div class="flex-1 flex flex-col overflow-y-auto">
+                    {{-- <div class="flex-1 flex flex-col overflow-y-auto">
                         <nav class="flex-1 px-2 py-4 bg-white space-y-1">
                             <a href="#" class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                                 <i class="fas fa-tachometer-alt mr-3 text-gray-500"></i>
@@ -51,7 +51,7 @@
                                 Customers
                             </a>
                         </nav>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -109,12 +109,12 @@
                         </div>
 
                         <!-- Cars grid -->
-                        <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                        <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                             <!-- Car cards will be inserted here by JavaScript -->
                         </div>
 
                         <!-- Pagination -->
-                        <div id="pagination" class="flex items-center justify-between mt-6 hidden">
+                        <div id="pagination" class="flex items-center justify-between mt-6 ">
                             <div class="flex-1 flex justify-between sm:hidden">
                                 <button id="prev-page-mobile" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                                     Previous
@@ -686,4 +686,3 @@
     </script>
 </body>
 </html>
-```

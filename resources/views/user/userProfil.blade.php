@@ -12,6 +12,8 @@
     <!-- Date picker -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
     <style>
         .modal {
             transition: opacity 0.25s ease;
@@ -33,7 +35,7 @@
                             <i class="fas fa-car mr-2"></i> Car Rental
                         </h1>
                     </div>
-                    <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    {{-- <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
                         <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Home
                         </a>
@@ -46,11 +48,19 @@
                         <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Contact
                         </a>
-                    </nav>
+                    </nav> --}}
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                {{-- <div class="hidden sm:ml-6 sm:flex sm:items-center">
                     <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         My Reservations
+                    </button>
+                </div> --}}
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M6 10a.75.75 0 0 1 .75-.75h9.546l-1.048-.943a.75.75 0 1 1 1.004-1.114l2.5 2.25a.75.75 0 0 1 0 1.114l-2.5 2.25a.75.75 0 1 1-1.004-1.114l1.048-.943H6.75A.75.75 0 0 1 6 10Z" clip-rule="evenodd" />
+                          </svg>
                     </button>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
@@ -164,12 +174,12 @@
         </div>
 
         <!-- Cars Grid -->
-        <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-0 hidden">
+        <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-0 ">
             <!-- Car cards will be inserted here by JavaScript -->
         </div>
 
         <!-- Pagination -->
-        <div id="pagination" class="flex items-center justify-between mt-6 px-4 sm:px-0 hidden">
+        <div id="pagination" class="flex items-center justify-between mt-6 px-4 sm:px-0 ">
             <div class="flex-1 flex justify-between sm:hidden">
                 <button id="prev-page-mobile" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                     Previous
@@ -256,7 +266,7 @@
                     <!-- Car details will be inserted here -->
                 </div>
 
-                <form id="reservation-form">
+                {{-- <form id="reservation-form" >
                     <input type="hidden" id="car-id">
                     
                     <div class="mb-4">
@@ -306,7 +316,69 @@
                         <button type="button" class="modal-close px-4 bg-gray-200 p-3 rounded-lg text-black hover:bg-gray-300 mr-2">Cancel</button>
                         <button type="submit" id="confirm-reservation-button" class="px-4 bg-indigo-600 p-3 rounded-lg text-white hover:bg-indigo-700">Confirm Reservation</button>
                     </div>
+                </form> --}}
+                <form id="reservation-form">
+                    <input type="hidden" id="car-id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="pickup-date">
+                            Pickup Date
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline datepicker" id="pickup-date" type="text" placeholder="Select date" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="return-date">
+                            Return Date
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline datepicker" id="return-date" type="text" placeholder="Select date" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="full-name">
+                            Full Name
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="full-name" type="text" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Email
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="john@example.com" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+                            Phone
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" type="tel" placeholder="(123) 456-7890" required>
+                    </div>
+                    
+                    <!-- Stripe Elements -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="payment-method">
+                            Payment Information
+                        </label>
+                        <div id="card-element" class="StripeElement"></div>
+                        <!-- Used to display error messages for Stripe elements -->
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+                
+                    <div id="reservation-summary" class="mb-6 p-4 bg-gray-50 rounded-md">
+                        <h3 class="font-bold text-gray-700 mb-2">Reservation Summary</h3>
+                        <div id="reservation-details">
+                            <!-- Reservation details will be calculated and inserted here -->
+                            <p>Please select dates to see the total cost.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end pt-2">
+                        <button type="button" class="modal-close px-4 bg-gray-200 p-3 rounded-lg text-black hover:bg-gray-300 mr-2">Cancel</button>
+                        <button type="submit" id="confirm-reservation-button" class="px-4 bg-indigo-600 p-3 rounded-lg text-white hover:bg-indigo-700">Confirm Reservation</button>
+                    </div>
                 </form>
+                
             </div>
         </div>
     </div>
@@ -357,7 +429,11 @@
         <div id="toast-message" class="text-white font-semibold"></div>
     </div>
 
+
+    
     <script>
+        
+        // -----------------------------------
         // Global variables
         let currentPage = 1;
         let pagination = null;
@@ -386,7 +462,42 @@
         const carsCount = document.getElementById('cars-count');
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const reservationForm = document.getElementById('reservation-form');
+        // const reservationForm = document.getElementById('reservation-form');
+        document.addEventListener('DOMContentLoaded', function () {
+    // Récupérer la clé publique Stripe depuis le fichier Blade
+    const stripePublicKey = "{{ env('STRIPE_PUBLIC_KEY') }}"; 
+    const stripe = Stripe(stripePublicKey);  // Initialiser Stripe avec la clé publique
+    const elements = stripe.elements();
+
+    // Créer l'élément de la carte et le monter
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    const reservationForm = document.getElementById('reservation-form');
+
+    // Fonction pour gérer la soumission du formulaire
+    reservationForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Créer un token Stripe pour la carte
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                // Afficher une erreur si la création du token échoue
+                alert(result.error.message);
+            } else {
+                // Ajouter le token Stripe au formulaire pour l'envoyer
+                const tokenInput = document.createElement('input');
+                tokenInput.setAttribute('type', 'hidden');
+                tokenInput.setAttribute('name', 'stripeToken');
+                tokenInput.setAttribute('value', result.token.id);
+                reservationForm.appendChild(tokenInput);
+
+                // Soumettre le formulaire après avoir ajouté le token
+                reservationForm.submit();
+            }
+        });
+    });
+});
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
@@ -536,7 +647,7 @@
                     // Hide loading state
                     loadingState.classList.add('hidden');
                     
-                    if (data.status && data.data.cars.length > 0) {
+                    if (data.status  && data.data.cars.length > 0) {
                         // Store available cars
                         availableCars = data.data.cars;
                         

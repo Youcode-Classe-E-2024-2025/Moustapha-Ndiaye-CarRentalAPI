@@ -1,49 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        // Validate incoming request
+        $validated = $request->validate([
+            'amount' => 'required|integer',
+            'currency' => 'required|string',
+            'payment_method' => 'required|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // Set Stripe secret key
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        try {
+            // Create PaymentIntent
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $validated['amount'],
+                'currency' => $validated['currency'],
+                'payment_method' => $validated['payment_method'],
+                'confirmation_method' => 'manual',
+                'confirm' => true,
+            ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
