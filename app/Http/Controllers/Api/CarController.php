@@ -10,35 +10,35 @@ use App\Models\Car;
 use App\Models\User;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Components(
+ *     @OA\Schema(
+ *         schema="Car",
+ *         type="object",
+ *         required={"id", "model", "daily_rate"},
+ *         @OA\Property(property="id", type="integer", example=1),
+ *         @OA\Property(property="model", type="string", example="Toyota Corolla"),
+ *         @OA\Property(property="image_url", type="string", example="http://example.com/car.jpg"),
+ *         @OA\Property(property="is_available", type="boolean", example=true),
+ *         @OA\Property(property="daily_rate", type="number", format="float", example=29.99)
+ *     )
+ * )
+ */
+
 
 class CarController extends Controller
 {
     /**
      * @OA\Get(
      *     path="/api/cars",
-     *     summary="Get a list of cars",
-     *     description="Returns a paginated list of cars",
+     *     summary="Récupérer la liste des voitures",
+     *     tags={"Cars"},
      *     @OA\Response(
      *         response=200,
-     *         description="A list of cars",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="cars", type="array", @OA\Items(type="object")),
-     *                 @OA\Property(property="pagination", type="object")
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="No cars found"
+     *         description="Liste des voitures",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Car"))
      *     )
      * )
-     */
-    /**
-     * Display a listing of the resource.
      */
     public function index()
     {
@@ -93,40 +93,32 @@ class CarController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/cars",
-     *     summary="Create a new car",
-     *     description="Add a new car to the database",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"model", "daily_rate"},
-     *             @OA\Property(property="model", type="string"),
-     *             @OA\Property(property="image_url", type="string"),
-     *             @OA\Property(property="is_available", type="boolean"),
-     *             @OA\Property(property="daily_rate", type="number", format="float")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Car created successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation errors",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     )
-     * )
-     */
+ * @OA\Post(
+ *     path="/api/cars",
+ *     summary="Créer une nouvelle voiture",
+ *     tags={"Cars"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"model", "daily_rate"},
+ *             @OA\Property(property="model", type="string", example="Toyota Corolla"),
+ *             @OA\Property(property="image_url", type="string", example="http://example.com/car.jpg"),
+ *             @OA\Property(property="is_available", type="boolean", example=true),
+ *             @OA\Property(property="daily_rate", type="number", format="float", example=29.99)
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Voiture créée avec succès",
+ *         @OA\JsonContent(ref="#/components/schemas/Car")
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Erreur de validation des champs"
+ *     )
+ * )
+ */
+
     /**
      * Store a newly created resource in storage.
      */
@@ -155,12 +147,11 @@ class CarController extends Controller
         ], 201);
 
     }
-
-     /**
+ /**
      * @OA\Get(
      *     path="/api/cars/{id}",
-     *     summary="Get a specific car",
-     *     description="Fetch the details of a single car",
+     *     summary="Récupérer une voiture spécifique",
+     *     tags={"Cars"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -169,22 +160,14 @@ class CarController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Car details",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", type="object")
-     *         )
+     *         description="Voiture récupérée",
+     *         @OA\JsonContent(ref="#/components/schemas/Car")
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Car not found"
+     *         description="Voiture non trouvée"
      *     )
      * )
-     */
-
-    /**
-     * Display the specified resource.
      */
     public function show(string $id)
     {
@@ -208,45 +191,42 @@ class CarController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/cars/{id}",
-     *     summary="Update an existing car",
-     *     description="Modify the details of an existing car",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"model", "daily_rate"},
-     *             @OA\Property(property="model", type="string"),
-     *             @OA\Property(property="image_url", type="string"),
-     *             @OA\Property(property="is_available", type="boolean"),
-     *             @OA\Property(property="daily_rate", type="number", format="float")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Car updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Car not found"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation errors"
-     *     )
-     * )
-     */
+ * @OA\Put(
+ *     path="/api/cars/{id}",
+ *     summary="Mettre à jour une voiture existante",
+ *     tags={"Cars"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"model", "daily_rate"},
+ *             @OA\Property(property="model", type="string", example="Toyota Corolla"),
+ *             @OA\Property(property="image_url", type="string", example="http://example.com/car.jpg"),
+ *             @OA\Property(property="is_available", type="boolean", example=true),
+ *             @OA\Property(property="daily_rate", type="number", format="float", example=29.99)
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Voiture mise à jour avec succès",
+ *         @OA\JsonContent(ref="#/components/schemas/Car")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Voiture non trouvée"
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Erreur de validation des champs"
+ *     )
+ * )
+ */
+
     /**
      * Update the specified resource in storage.
      */
@@ -287,30 +267,26 @@ class CarController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/cars/{id}",
-     *     summary="Delete a specific car",
-     *     description="Remove a car from the database",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Car deleted successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="boolean"),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Car not found"
-     *     )
-     * )
-     */
+ * @OA\Delete(
+ *     path="/api/cars/{id}",
+ *     summary="Supprimer une voiture",
+ *     tags={"Cars"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Voiture supprimée avec succès"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Voiture non trouvée"
+ *     )
+ * )
+ */
 
     /**
      * Remove the specified resource from storage.

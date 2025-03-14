@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
+
 /**
  * @OA\Info(
- *     title="CarRentalAPI",
- *     description="API for managing car rentals",
+ *     title="Car Rental API",
  *     version="1.0.0",
- *     @OA\Contact(
- *         email="support@carrentalapi.com",
- *         name="CarRental Support"
- *     )
- * )
- * 
- * @OA\Server(
- *     url="http://localhost:8000/api",
- *     description="Local development server"
+ *     description="API for managing car rentals"
  * )
  */
+
 abstract class Controller
 {
     //

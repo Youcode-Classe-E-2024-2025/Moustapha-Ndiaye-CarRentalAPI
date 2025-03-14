@@ -121,6 +121,10 @@ return [
              * ],.
              */
             ],
+            'scan' => [
+                    app_path('app/Http/Controllers/Api'),
+                ],
+
 
             /**
              * analyser: defaults to \OpenApi\StaticAnalyser .

@@ -1,11 +1,134 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "CarRentalAPI",
+        "title": "Car Rental API",
         "description": "API for managing car rentals",
         "version": "1.0.0"
     },
     "paths": {
+        "/api/cars": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Récupérer la liste des voitures",
+                "operationId": "4e913ee0b6125f5ad41f32df1df5b8a4",
+                "responses": {
+                    "200": {
+                        "description": "Liste des voitures",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Car"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cars/{id}": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Récupérer une voiture spécifique",
+                "operationId": "27c826192271dae5e6e7246be568b4ca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Voiture récupérée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Car"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Voiture non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/payments": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Create a payment intent",
+                "operationId": "985b848b4cb6ca6115cf4ea71e314c0c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "currency",
+                                    "payment_method"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "description": "Amount in smallest currency unit (e.g., cents for USD)",
+                                        "type": "integer",
+                                        "example": 1000
+                                    },
+                                    "currency": {
+                                        "description": "Currency code (e.g., usd, eur)",
+                                        "type": "string",
+                                        "example": "usd"
+                                    },
+                                    "payment_method": {
+                                        "description": "Stripe payment method ID",
+                                        "type": "string",
+                                        "example": "pm_card_visa"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payment intent created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "clientSecret": {
+                                            "type": "string",
+                                            "example": "pi_1FHeJX2eZvKYlo2C1mz8oC6h_secret_Jhd9s9d"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/rentals": {
             "get": {
                 "tags": [
@@ -188,12 +311,207 @@
                     }
                 }
             }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate user",
+                "operationId": "c3a554fd0afb79aaae58fdf152d12873",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User authenticated"
+                    },
+                    "302": {
+                        "description": "Redirect to dashboard or user profile"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Show the registration form",
+                "operationId": "a9cb8c0a946f50565763929a13d438f6",
+                "responses": {
+                    "200": {
+                        "description": "Registration form displayed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "operationId": "a43daba1daa38a0c3bb6d96c75211f82",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Display user profile",
+                "operationId": "673abc2d84509a008a0f797cb89af210",
+                "responses": {
+                    "200": {
+                        "description": "User profile page displayed"
+                    }
+                }
+            }
+        },
+        "/admin/dashboard": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Display admin dashboard",
+                "operationId": "f29e85c83542724e3fe48b82aefde742",
+                "responses": {
+                    "200": {
+                        "description": "Admin dashboard page displayed"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Car": {
+                "required": [
+                    "id",
+                    "model",
+                    "daily_rate"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "model": {
+                        "type": "string",
+                        "example": "Toyota Corolla"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "example": "http://example.com/car.jpg"
+                    },
+                    "is_available": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "daily_rate": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 29.99
+                    }
+                },
+                "type": "object"
+            }
         }
     },
     "tags": [
         {
+            "name": "Cars",
+            "description": "Cars"
+        },
+        {
+            "name": "Payments",
+            "description": "Payments"
+        },
+        {
             "name": "Rentals",
             "description": "Rentals"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "Admin",
+            "description": "Admin"
         }
     ]
 }
